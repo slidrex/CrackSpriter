@@ -3,20 +3,12 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "Viewport.h"
 
-void Crack::Editor::reshapeFunction(GLFWwindow* window, int w, int h)
-{
-	glViewport(0, 0, w, h);
-}
-void Crack::Editor::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	zoomFactor = glm::clamp(zoomFactor + -(float)yoffset * zoomSensitivity, minZoomFactor, maxZoomFactor);
-}
 
 void Crack::Editor::Init()
 {
 	m_CanvasWidth = 18;
 	m_CanvasHeight = 18;
-
+	
 	glm::vec4 defaultCanvasColor = glm::vec4(0.5f, 0.7f, 0.5f, 1.0f);
 
 	viewport = new Crack::Viewport();

@@ -1,0 +1,14 @@
+﻿  GUI.cpp
+C:\Proj\CrackSpriter\Viewport.h(18,21): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Proj\CrackSpriter\Viewport.h(19,21): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Proj\CrackSpriter\Viewport.h(23,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Proj\CrackSpriter\Viewport.h(24,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  CrackSpriter.vcxproj -> C:\Proj\CrackSpriter\Debug\CrackSpriter.exe

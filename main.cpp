@@ -17,7 +17,15 @@ void InitDebugger()
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 }
-
+Crack::Editor* application;
+void reshapeFunction(GLFWwindow* window, int w, int h)
+{
+	glViewport(0, 0, w, h);
+}
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	application->zoomFactor = glm::clamp(application->zoomFactor + -(float)yoffset * application->zoomSensitivity, application->minZoomFactor, application->maxZoomFactor);
+}
 
 int main()
 {
@@ -33,7 +41,7 @@ int main()
 		print("glew is not setup!");
 	}
 	Crack::LayerStack layerStack = Crack::LayerStack();
-	Crack::Editor* application = new Crack::Editor(window);
+	application = new Crack::Editor(window);
 	Crack::GUI* gui = new Crack::GUI(application);
 
 	layerStack.PushLayer(application);
@@ -56,7 +64,8 @@ int main()
 		}
 
 
-		
+		glfwSetWindowSizeCallback(window, reshapeFunction);
+		glfwSetScrollCallback(window, scrollCallback);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

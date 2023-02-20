@@ -11,6 +11,7 @@ namespace Crack
 		void Init() override;
 		void Update() override;
 		void OnClose() override;
+		void ShowDockingWindow();
 	public:
 		GUI(Editor* application);
 	};

@@ -1,6 +1,6 @@
 #pragma once
 #include "Layer.h"
-#include "GLFW/glfw3.h"
+#include "glfw3.h"
 #include "Viewport.h"
 
 #define CRACK_BRUSH 0
