@@ -23,12 +23,13 @@ namespace Crack
 			selectedTool = CRACK_BRUSH; 
 			m_Window = window; 
 			viewport = nullptr; }
-		std::string exportPath = "C:\\Users\\artem\\OneDrive\\Рабочий стол\\images\\imgvideo.ppm";
+		std::string exportPath = "C:\\Users\\artem\\OneDrive\\Рабочий стол\\imgvideo.ppm";
 		unsigned int m_CanvasWidth = 0;
 		unsigned int m_CanvasHeight = 0;
 		float pushColor[3] = { 0.0f, 0.0f, 0.0f };
 		float zoomFactor = 0.1f;
 		float minZoomFactor = 0.03f;
+		float* viewportOffset;
 		float maxZoomFactor = 1.0f;
 		float zoomSensitivity = 0.04f;
 		int selectedTool;

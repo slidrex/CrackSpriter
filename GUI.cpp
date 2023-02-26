@@ -5,6 +5,8 @@
 
 bool showExportWindow;
 ImGuiIO* io = nullptr;
+int canvasSize[] = { 16, 16 };
+float* canvasColor;
 
 Crack::GUI::GUI(Editor* application)
 {
@@ -13,6 +15,7 @@ Crack::GUI::GUI(Editor* application)
 
 void Crack::GUI::Init()
 {
+	canvasColor = new float[3];
 	const char* glsl_version = "#version 130";
 	ImGui::CreateContext();
 	io = &ImGui::GetIO(); (void)io;
@@ -62,6 +65,7 @@ void Crack::GUI::Update()
 	if (ImGui::Begin("Toolbar"))
 	{
 		ImGui::SliderFloat("Zoom Factor", &m_Application->zoomFactor, m_Application->maxZoomFactor, m_Application->minZoomFactor);
+		ImGui::SliderFloat2("Camera Position", m_Application->viewportOffset, -10.0f, 10.0f);
 
 		ImGui::Combo("Tools", &m_Application->selectedTool, items, IM_ARRAYSIZE(items));
 
@@ -73,14 +77,15 @@ void Crack::GUI::Update()
 	{
 		if (ImGui::Begin("New File"))
 		{
-			int canvasSize[] = { 16, 16 };
+			
 
 
 			ImGui::InputInt2("Canvas size", canvasSize);
-			ImGui::ColorPicker3("Base Canvas Color", m_Application->pushColor);
+			ImGui::ColorPicker3("Base Canvas Color", canvasColor);
 			if (ImGui::Button("Create"))
 			{
-
+				m_Application->viewport->CreateCanvas(canvasSize[0], canvasSize[1], glm::vec4(canvasColor[0], canvasColor[1], canvasColor[2], 1.0f));
+				int canvasSize[] = { 16, 16 };
 			}
 			ImGui::End();
 		}
@@ -111,25 +116,21 @@ void Crack::GUI::ShowDockingWindow()
 
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
     
-        const ImGuiViewport* viewport = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(viewport->WorkPos);
-        ImGui::SetNextWindowSize(viewport->WorkSize);
-        ImGui::SetNextWindowViewport(viewport->ID);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-        window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->WorkPos);
+    ImGui::SetNextWindowSize(viewport->WorkSize);
+	ImGui::SetNextWindowViewport(viewport->ID);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+    window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
     
 
     if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
         window_flags |= ImGuiWindowFlags_NoBackground;
     bool* p_open = (bool*)true;
-    // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-    // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-    // all active windows docked into it will lose their parent and become undocked.
-    // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-    // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
     
+
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     ImGui::Begin("DockSpace Demo", p_open, window_flags);
     

@@ -14,10 +14,10 @@ void Crack::Viewport::CreateCanvas(unsigned int xCanvasSize, unsigned int yCanva
 
 	attachedCanvas->canvasBounds = new int[8]
 	{
-		 -(int)((xCanvasSize/2)+1), -(int)((yCanvasSize/2)+1),
+		 -(int)((xCanvasSize/2)+1), -(int)((yCanvasSize/2)+0.5),
 		-(int)((xCanvasSize /2)+1), (int)(yCanvasSize/2)+1,
-		(int)(xCanvasSize/2)+1, (int)(yCanvasSize/2)+1,
-		(int)(xCanvasSize/2)+1, -(int)((yCanvasSize/2)+1),
+		(int)((xCanvasSize/2)+0.5), (int)(yCanvasSize/2)+1,
+		(int)((xCanvasSize/2)+0.5), -(int)((yCanvasSize/2)+1),
 	};
 	attachedCanvas->pixels = new PixelArray(xCanvasSize * yCanvasSize);
 
@@ -44,6 +44,7 @@ void Crack::Viewport::CreateCanvas(unsigned int xCanvasSize, unsigned int yCanva
 }
 void Crack::Viewport::PushColor(glm::vec2 position, glm::vec4 color)
 {
+	position.y *= -1;
 	int xOffset = ((int)position.x + (attachedCanvas->xSize/2));
 	int yOffset = ((int)position.y + (attachedCanvas->ySize / 2));
 	attachedCanvas->pixels->PushPixel(attachedCanvas->xSize, xOffset, yOffset, glm::vec2(position.x, position.y), color);
@@ -83,25 +84,26 @@ void Crack::Viewport::Export(const std::string &path) const
 		}
 	}
 }
-bool Crack::Viewport::IsInsideViewport(glm::vec2 v, float zoomFactor) const
+bool Crack::Viewport::IsInsideViewport(glm::vec2 p, glm::mat4 mvp) const
 {
-	glm::vec4* corners = GetViewportCorners(zoomFactor);
+	glm::vec4* corners = GetViewportCorners(mvp);
 	
-	return (v.x > corners[0].x && v.x < corners[2].x && v.y > corners[0].y && v.y < corners[1].y);
+	return (p.x > corners[0].x && p.x < corners[2].x && p.y > corners[0].y && p.y < corners[1].y);
 }
-glm::vec2 Crack::Viewport::FromScreenToViewport(int xWindowSize, int yWindowSize, glm::vec2 point) const
+glm::vec2 Crack::Viewport::ScreenToViewport(glm::vec2 screenSize, glm::vec2 point, glm::mat4 projection) const
 {
-	glm::vec4 center = glm::vec4(xWindowSize / 2, yWindowSize / 2, 0.0f, 0.0f);
-	glm::vec4 p = glm::vec4(point.x, point.y, 0.0f, 0.0f) - center;
+	glm::vec2 rawPointPosition = point;
+	//Lerps (0; screenSize) raw point position into (-1;1) coordinate system
+	glm::vec2 fromScreenToStandartCoordinateSystem = glm::vec2((point.x * 2) / screenSize.x, (point.y * 2) / screenSize.y) - glm::vec2(1);
 
-	return p;
+	return glm::round(glm::inverse(projection) * glm::vec4(fromScreenToStandartCoordinateSystem.x, fromScreenToStandartCoordinateSystem.y, 0.0f, 0.0f));
 }
-glm::vec4* Crack::Viewport::GetViewportCorners(float zoomFactor) const
+glm::vec4* Crack::Viewport::GetViewportCorners(glm::mat4 mvp) const
 {
 	glm::vec4 *corners = new glm::vec4[4];
 	for(int i = 0; i < 4; i++)
 	{
-		corners[i] = glm::vec4(attachedCanvas->canvasBounds[i * 2] / zoomFactor, attachedCanvas->canvasBounds[(i * 2) + 1] / zoomFactor, 0.0f, 0.0f);
+		corners[i] = glm::inverse(mvp) * glm::vec4(attachedCanvas->canvasBounds[i * 2], attachedCanvas->canvasBounds[(i * 2) + 1], 0.0f, 0.0f);
 	}
 	
 	return corners;

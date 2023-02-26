@@ -52,7 +52,7 @@ int main()
 		layer->Init();
 	}
 	
-	glClearColor(0.2, 0.2, 0.2, 1);
+	glClearColor(GLclampf(0.2f), GLclampf(0.2f), GLclampf(0.2f), GLclampf(1.0f));
 	while (glfwWindowShouldClose(window) == false)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);

@@ -15,13 +15,13 @@ namespace Crack
 			color[1] = col.y;
 			color[2] = col.z;
 			color[3] = col.w;
-			position[0] = pos.x;
-			position[1] = pos.y;
+			position[0] = (int)pos.x;
+			position[1] = (int)pos.y;
 		}
 		Pixel()
 		{
-			position[0] = 0.0f;
-			position[1] = 0.0f;
+			position[0] = 0;
+			position[1] = 0;
 			color[0] = 0.5f;
 			color[1] = 0.3f;
 			color[2] = 0.8f;
@@ -58,9 +58,9 @@ namespace Crack
 		void CreateCanvas(unsigned int xCanvasSize, unsigned int yCanvasSize, glm::vec4 initialColor);
 		void Render() const;
 		Shader* GetShader() const;
-		glm::vec4* GetViewportCorners(float zoomFactor) const;
-		glm::vec2 FromScreenToViewport(int xWindowSize, int yWindowSize, glm::vec2 v) const;
-		bool IsInsideViewport(glm::vec2 v, float zoomFactor) const;
+		glm::vec4* GetViewportCorners(glm::mat4 mvp) const;
+		glm::vec2 ScreenToViewport(glm::vec2 screenPosition, glm::vec2 point, glm::mat4 projection) const;
+		bool IsInsideViewport(glm::vec2 p, glm::mat4 mvp) const;
 		void PushColor(glm::vec2 position, glm::vec4 color);
 		void Export(const std::string& path) const;
 	private:
