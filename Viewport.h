@@ -35,9 +35,14 @@ namespace Crack
 		{
 			pixels = new Pixel[size];
 		}
+		Pixel& GetPixel(int width, int x, int y)
+		{
+			return pixels[x + y * width];
+		}
 		void PushPixel(int width, int x, int y, glm::vec2 position, glm::vec4 color)
 		{
-			pixels[x + y * width] = Pixel(position, color);
+			Pixel& pixel = GetPixel(width, x, y);
+			pixel = Pixel(position, color);
 		}
 	};
 	struct Canvas
@@ -58,10 +63,11 @@ namespace Crack
 		void CreateCanvas(unsigned int xCanvasSize, unsigned int yCanvasSize, glm::vec4 initialColor);
 		void Render() const;
 		Shader* GetShader() const;
-		glm::vec4* GetViewportCorners(glm::mat4 mvp) const;
+		glm::vec4* GetViewportCorners() const;
 		glm::vec2 ScreenToViewport(glm::vec2 screenPosition, glm::vec2 point, glm::mat4 projection) const;
-		bool IsInsideViewport(glm::vec2 p, glm::mat4 mvp) const;
+		bool IsInsideViewport(glm::vec2 p) const;
 		void PushColor(glm::vec2 position, glm::vec4 color);
+		Pixel& GetPixel(glm::vec2 position);
 		void Export(const std::string& path) const;
 	private:
 		Canvas* attachedCanvas;

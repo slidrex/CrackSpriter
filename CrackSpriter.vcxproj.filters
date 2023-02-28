@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Layers">
       <UniqueIdentifier>{6ed02a9a-e5bc-47bb-b6b3-f4fab4a7e51d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\EditorTools">
+      <UniqueIdentifier>{2cc2bb68-3413-42f6-ba05-e72eb6e14d98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,6 +66,12 @@
     <ClCompile Include="imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>Source Files\vendor</Filter>
     </ClCompile>
+    <ClCompile Include="EditorTools.cpp">
+      <Filter>Source Files\EditorTools</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -103,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="imgui\backends\imgui_impl_opengl3_loader.h">
       <Filter>Source Files\vendor</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorTools.h">
+      <Filter>Source Files\EditorTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

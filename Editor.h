@@ -1,39 +1,43 @@
 #pragma once
-#include "Layer.h"
+#include <memory>
 #include "glfw3.h"
 #include "Viewport.h"
+#include "EditorTools.h"
+#include "Layer.h"
 
-#define CRACK_BRUSH 0
-#define CRACK_COLOR_PICKER 1
+#define EDITOR_TOOLS_BRUSH 0
+#define EDITOR_TOOLS_COLOR_PICKER 1
 
 const static char* items[] { "Brush", "Color picker" };
 namespace Crack
 {
+	class Tool;
 	class Editor : public Layer
 	{
-	private:
-		void Init() override;
-		void Update() override;
-		void OnClose() override;
 	public:
+		Editor(GLFWwindow* window);
+		Editor();
+		GLFWwindow* GetWindow() { return m_Window; }
+		static Editor& Get() { return *s_Instance; }
 		void reshapeFunction(GLFWwindow* window, int w, int h);
 		void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
-		Editor(GLFWwindow* window)
-		{
-			selectedTool = CRACK_BRUSH; 
-			m_Window = window; 
-			viewport = nullptr; }
 		std::string exportPath = "C:\\Users\\artem\\OneDrive\\Рабочий стол\\imgvideo.ppm";
 		unsigned int m_CanvasWidth = 0;
 		unsigned int m_CanvasHeight = 0;
-		float pushColor[3] = { 0.0f, 0.0f, 0.0f };
+		float pushColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		float zoomFactor = 0.1f;
 		float minZoomFactor = 0.03f;
-		float* viewportOffset;
 		float maxZoomFactor = 1.0f;
 		float zoomSensitivity = 0.04f;
-		int selectedTool;
 		Crack::Viewport* viewport;
+		int SelectedTool;
+	private:
+		std::vector<std::unique_ptr<Tool>> tools;
 		GLFWwindow *m_Window;
+		void Init() override;
+		void Update() override;
+		void OnClose() override;
+		static Editor* s_Instance;
+
 	};
 }

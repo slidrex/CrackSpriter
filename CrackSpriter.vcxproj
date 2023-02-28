@@ -80,6 +80,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="EditorTools.cpp" />
+    <ClCompile Include="Events.cpp" />
     <ClCompile Include="FilestreamParser.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_glfw.cpp" />
@@ -95,6 +97,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="EditorTools.h" />
+    <ClInclude Include="Events.h" />
     <ClInclude Include="FilestreamParser.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="imgui\backends\imgui_impl_glfw.h" />

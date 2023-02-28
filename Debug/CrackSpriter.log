@@ -1,9 +1,2 @@
-﻿  Viewport.cpp
-C:\Proj\CrackSpriter\Viewport.cpp(24,19): warning C4018: '<': signed/unsigned mismatch
-C:\Proj\CrackSpriter\Viewport.cpp(26,20): warning C4018: '<': signed/unsigned mismatch
-C:\Proj\CrackSpriter\Viewport.cpp(75,19): warning C4018: '<': signed/unsigned mismatch
-C:\Proj\CrackSpriter\Viewport.cpp(77,20): warning C4018: '<': signed/unsigned mismatch
-C:\Proj\CrackSpriter\Viewport.cpp(80,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Proj\CrackSpriter\Viewport.cpp(81,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Proj\CrackSpriter\Viewport.cpp(82,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+﻿  GUI.cpp
   CrackSpriter.vcxproj -> C:\Proj\CrackSpriter\Debug\CrackSpriter.exe

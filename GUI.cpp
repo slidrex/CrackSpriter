@@ -24,7 +24,7 @@ void Crack::GUI::Init()
 	io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	ImGui::StyleColorsDark();
 	float color[3] = { 1.0f, 1.0f, 1.0f };
-	ImGui_ImplGlfw_InitForOpenGL(m_Application->m_Window, true);
+	ImGui_ImplGlfw_InitForOpenGL(m_Application->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
@@ -65,9 +65,8 @@ void Crack::GUI::Update()
 	if (ImGui::Begin("Toolbar"))
 	{
 		ImGui::SliderFloat("Zoom Factor", &m_Application->zoomFactor, m_Application->maxZoomFactor, m_Application->minZoomFactor);
-		ImGui::SliderFloat2("Camera Position", m_Application->viewportOffset, -10.0f, 10.0f);
 
-		ImGui::Combo("Tools", &m_Application->selectedTool, items, IM_ARRAYSIZE(items));
+		ImGui::Combo("Tools", &m_Application->SelectedTool, items, IM_ARRAYSIZE(items));
 
 		ImGui::ColorPicker3("Color", m_Application->pushColor, ImGuiColorEditFlags_NoOptions);
 		ImGui::End();

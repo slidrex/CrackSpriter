@@ -42,12 +42,19 @@ void Crack::Viewport::CreateCanvas(unsigned int xCanvasSize, unsigned int yCanva
 	glEnableVertexArrayAttrib(attachedCanvas->vao, 1);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Pixel), (const void*)offsetof(Pixel, color)); //color
 }
+Crack::Pixel& Crack::Viewport::GetPixel(glm::vec2 position)
+{
+	position.y *= -1;
+	int xOffset = ((int)position.x + (attachedCanvas->xSize / 2));
+	int yOffset = ((int)position.y + (attachedCanvas->ySize / 2));
+	return attachedCanvas->pixels->GetPixel(attachedCanvas->xSize, xOffset, yOffset);
+}
 void Crack::Viewport::PushColor(glm::vec2 position, glm::vec4 color)
 {
 	position.y *= -1;
 	int xOffset = ((int)position.x + (attachedCanvas->xSize/2));
 	int yOffset = ((int)position.y + (attachedCanvas->ySize / 2));
-	attachedCanvas->pixels->PushPixel(attachedCanvas->xSize, xOffset, yOffset, glm::vec2(position.x, position.y), color);
+	attachedCanvas->pixels->PushPixel(attachedCanvas->xSize, xOffset, yOffset, position, color);
 }
 void Crack::Viewport::Render() const
 {
@@ -84,9 +91,9 @@ void Crack::Viewport::Export(const std::string &path) const
 		}
 	}
 }
-bool Crack::Viewport::IsInsideViewport(glm::vec2 p, glm::mat4 mvp) const
+bool Crack::Viewport::IsInsideViewport(glm::vec2 p) const
 {
-	glm::vec4* corners = GetViewportCorners(mvp);
+	glm::vec4* corners = GetViewportCorners();
 	
 	return (p.x > corners[0].x && p.x < corners[2].x && p.y > corners[0].y && p.y < corners[1].y);
 }
@@ -98,12 +105,12 @@ glm::vec2 Crack::Viewport::ScreenToViewport(glm::vec2 screenSize, glm::vec2 poin
 
 	return glm::round(glm::inverse(projection) * glm::vec4(fromScreenToStandartCoordinateSystem.x, fromScreenToStandartCoordinateSystem.y, 0.0f, 0.0f));
 }
-glm::vec4* Crack::Viewport::GetViewportCorners(glm::mat4 mvp) const
+glm::vec4* Crack::Viewport::GetViewportCorners() const
 {
 	glm::vec4 *corners = new glm::vec4[4];
 	for(int i = 0; i < 4; i++)
 	{
-		corners[i] = glm::inverse(mvp) * glm::vec4(attachedCanvas->canvasBounds[i * 2], attachedCanvas->canvasBounds[(i * 2) + 1], 0.0f, 0.0f);
+		corners[i] = glm::vec4(attachedCanvas->canvasBounds[i * 2], attachedCanvas->canvasBounds[(i * 2) + 1], 0.0f, 0.0f);
 	}
 	
 	return corners;
