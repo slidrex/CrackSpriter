@@ -3,16 +3,92 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
-bool showExportWindow;
 ImGuiIO* io = nullptr;
 int canvasSize[] = { 16, 16 };
 float* canvasColor;
 
-Crack::GUI::GUI(Editor* application)
+Crack::GUI::GUI(Editor* application) : m_Application(application), showExportWindow(false) {}
+
+void Crack::GUI::Update()
 {
-	m_Application = application;
+	BeginRenderUI();
+
+	if (ImGui::BeginMainMenuBar())
+	{
+		OnMainMenu();
+		ImGui::EndMainMenuBar();
+	}
+
+
+	if (ImGui::Begin("Toolbar"))
+	{
+		OnToolbar();
+		ImGui::End();
+	}
+
+	if (showExportWindow)
+		OnExportWindow();
+
+	EndRenderUI();
 }
 
+void Crack::GUI::OnMainMenu() 
+{
+	if (ImGui::BeginMenu("File"))
+	{
+		if (ImGui::MenuItem("New File"))
+		{
+			showExportWindow = true;
+		}
+
+		if (ImGui::MenuItem("Export"))
+		{
+			showExportWindow = true;
+			m_Application->GetViewport().Export(m_Application->GetExportPath());
+		}
+		ImGui::EndMenu();
+	}
+	if (ImGui::BeginMenu("Edit"))
+	{
+		if (ImGui::MenuItem("Undo", "CTRL+Z")) 
+		{
+			m_Application->Undo();
+			print("Undo!");
+		}
+
+		ImGui::Separator();
+		ImGui::EndMenu();
+	}
+}
+void Crack::GUI::OnToolbar()
+{
+	float sliderValue = m_Application->GetZoomFactor();
+	ImGui::SliderFloat("Zoom Factor", &sliderValue, m_Application->GetMaxZoomFactor(), m_Application->GetMinZoomFactor());
+	m_Application->SetZoomFactor(sliderValue);
+	int currentItem = m_Application->GetSelectedTool();
+	ImGui::Combo("Tools", &currentItem, items, IM_ARRAYSIZE(items));
+	m_Application->SetSelectedTool(currentItem);
+	float* pushColor = m_Application->GetPushColor();
+	
+
+	ImGui::ColorPicker3("Color", pushColor, ImGuiColorEditFlags_NoOptions);
+	m_Application->SetPushColor(pushColor);
+}
+void Crack::GUI::OnExportWindow() 
+{
+	if (ImGui::Begin("New File"))
+	{
+		ImGui::InputInt2("Canvas size", canvasSize);
+		ImGui::ColorPicker3("Base Canvas Color", canvasColor);
+		if (ImGui::Button("Create"))
+		{
+			m_Application->GetViewport().CreateCanvas(canvasSize[0], canvasSize[1], glm::vec4(canvasColor[0], canvasColor[1], canvasColor[2], 1.0f));
+			m_Application->Backups->ClearBackupStack();
+			int canvasSize[] = { 16, 16 };
+		}
+		ImGui::End();
+	}
+}
 void Crack::GUI::Init()
 {
 	canvasColor = new float[3];
@@ -27,69 +103,16 @@ void Crack::GUI::Init()
 	ImGui_ImplGlfw_InitForOpenGL(m_Application->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 }
-
-void Crack::GUI::Update()
+void Crack::GUI::BeginRenderUI()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-    ShowDockingWindow();
-
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("New File"))
-			{
-				showExportWindow = true;
-			}
-
-			if (ImGui::MenuItem("Export"))
-			{
-				m_Application->viewport->Export(m_Application->exportPath);
-			}
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Edit"))
-		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-
-			ImGui::Separator();
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
-	}
-
-
-	if (ImGui::Begin("Toolbar"))
-	{
-		ImGui::SliderFloat("Zoom Factor", &m_Application->zoomFactor, m_Application->maxZoomFactor, m_Application->minZoomFactor);
-
-		ImGui::Combo("Tools", &m_Application->SelectedTool, items, IM_ARRAYSIZE(items));
-
-		ImGui::ColorPicker3("Color", m_Application->pushColor, ImGuiColorEditFlags_NoOptions);
-		ImGui::End();
-	}
-
-	if (showExportWindow)
-	{
-		if (ImGui::Begin("New File"))
-		{
-			
-
-
-			ImGui::InputInt2("Canvas size", canvasSize);
-			ImGui::ColorPicker3("Base Canvas Color", canvasColor);
-			if (ImGui::Button("Create"))
-			{
-				m_Application->viewport->CreateCanvas(canvasSize[0], canvasSize[1], glm::vec4(canvasColor[0], canvasColor[1], canvasColor[2], 1.0f));
-				int canvasSize[] = { 16, 16 };
-			}
-			ImGui::End();
-		}
-	}
-
+	ShowDockingWindow();
+}
+void Crack::GUI::EndRenderUI()
+{
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -100,7 +123,6 @@ void Crack::GUI::Update()
 		glfwMakeContextCurrent(backup_current_context);
 	}
 }
-
 void Crack::GUI::OnClose()
 {
 	ImGui_ImplOpenGL3_Shutdown();
@@ -133,9 +155,9 @@ void Crack::GUI::ShowDockingWindow()
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     ImGui::Begin("DockSpace Demo", p_open, window_flags);
     
-        ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
 
-        ImGui::PopStyleVar(2);
+    ImGui::PopStyleVar(2);
 
 
     ImGuiIO& io = ImGui::GetIO();

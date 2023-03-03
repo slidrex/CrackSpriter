@@ -20,6 +20,8 @@ namespace Crack
 	public:
 		Brush(Editor* editor) : Tool(editor) {}
 	public:
+		void OnPushBegin(Crack::Pixel& pixel) override;
+		void OnPushEnd(Crack::Pixel& pixel) override;
 		void OnPush(Crack::Pixel& pixel) override;
 	};
 	class ColorPicker : public Tool

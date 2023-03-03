@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackupStack.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorTools.cpp" />
     <ClCompile Include="Events.cpp" />
@@ -96,6 +97,8 @@
     <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackupStack.h" />
+    <ClInclude Include="Canvas.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorTools.h" />
     <ClInclude Include="Events.h" />

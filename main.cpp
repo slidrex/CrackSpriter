@@ -24,7 +24,7 @@ void reshapeFunction(GLFWwindow* window, int w, int h)
 }
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	application->zoomFactor = glm::clamp(application->zoomFactor + -(float)yoffset * application->zoomSensitivity, application->minZoomFactor, application->maxZoomFactor);
+	application->SetZoomFactor(glm::clamp(application->GetZoomFactor() + -(float)yoffset * application->GetZoomSensitivity(), application->GetMinZoomFactor(), application->GetMaxZoomFactor()));
 }
 
 int main()

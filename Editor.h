@@ -4,6 +4,7 @@
 #include "Viewport.h"
 #include "EditorTools.h"
 #include "Layer.h"
+#include "BackupStack.h"
 
 #define EDITOR_TOOLS_BRUSH 0
 #define EDITOR_TOOLS_COLOR_PICKER 1
@@ -19,24 +20,38 @@ namespace Crack
 		Editor();
 		GLFWwindow* GetWindow() { return m_Window; }
 		static Editor& Get() { return *s_Instance; }
-		void reshapeFunction(GLFWwindow* window, int w, int h);
-		void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
-		std::string exportPath = "C:\\Users\\artem\\OneDrive\\Рабочий стол\\imgvideo.ppm";
-		unsigned int m_CanvasWidth = 0;
-		unsigned int m_CanvasHeight = 0;
-		float pushColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-		float zoomFactor = 0.1f;
-		float minZoomFactor = 0.03f;
-		float maxZoomFactor = 1.0f;
-		float zoomSensitivity = 0.04f;
-		Crack::Viewport* viewport;
-		int SelectedTool;
+		float GetZoomFactor() { return zoomFactor; }
+		void SetZoomFactor(float zoom) { zoomFactor = zoom; }
+		float GetMaxZoomFactor() { return maxZoomFactor; }
+		float GetMinZoomFactor() { return minZoomFactor; }
+		unsigned int GetCanvasWidth() { return m_CanvasWidth; }
+		unsigned int GetCanvasHeight() { return m_CanvasHeight; }
+		void SetCanvasSize(unsigned int width, unsigned int height) { m_CanvasHeight = height; m_CanvasWidth = width; }
+		int GetSelectedTool() { return selectedTool; }
+		void SetSelectedTool(int tool) { selectedTool = tool; }
+		float* GetPushColor() { return pushColor; }
+		void SetPushColor(float* color);
+		float GetZoomSensitivity() { return zoomSensitivity; }
+		Viewport& GetViewport() { return *viewport; }
+		std::string GetExportPath() { return exportPath; }
+		BackupStack* Backups;
+		void Undo();
 	private:
-		std::vector<std::unique_ptr<Tool>> tools;
-		GLFWwindow *m_Window;
 		void Init() override;
 		void Update() override;
 		void OnClose() override;
+		std::string exportPath;
+		unsigned int m_CanvasWidth;
+		unsigned int m_CanvasHeight;
+		int selectedTool;
+		float pushColor[4];
+		float zoomFactor;
+		float minZoomFactor;
+		float maxZoomFactor;
+		float zoomSensitivity;
+		GLFWwindow *m_Window;
+		Crack::Viewport* viewport;
+		std::vector<std::unique_ptr<Tool>> tools;
 		static Editor* s_Instance;
 
 	};

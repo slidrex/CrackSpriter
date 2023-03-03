@@ -12,6 +12,12 @@ namespace Crack
 		void Update() override;
 		void OnClose() override;
 		void ShowDockingWindow();
+		void OnMainMenu();
+		void OnToolbar();
+		void BeginRenderUI();
+		void EndRenderUI();
+		void OnExportWindow();
+		bool showExportWindow;
 	public:
 		GUI(Editor* application);
 	};
