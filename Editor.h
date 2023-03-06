@@ -37,6 +37,7 @@ namespace Crack
 		BackupStack* Backups;
 		void Undo();
 	private:
+		void UpdateCanvas();
 		void Init() override;
 		void Update() override;
 		void OnClose() override;

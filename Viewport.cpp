@@ -3,6 +3,7 @@
 #include "glew.h"
 #include "Log.h"
 #include <ostream>
+#include <png.h>
 
 void Crack::Viewport::CreateCanvas(unsigned int xCanvasSize, unsigned int yCanvasSize, glm::vec4 initialColor)
 {
@@ -69,27 +70,70 @@ void Crack::Viewport::Render() const
 }
 void Crack::Viewport::Export(const std::string &path) const
 {
-	std::ofstream stream(path, std::ofstream::out);
-	if (stream.is_open())
+	FILE* fp;
+	errno_t err = fopen_s(&fp, path.c_str(), "wb");
+	if (err != 0)
 	{
-		 print("File is written!");
-	}
-	else
 		print("Path is not found!");
-
-	stream << "P3" << " " << attachedCanvas->xSize << " " << attachedCanvas->ySize << " " << "255" << std::endl;
-	
-	for(int i = 0; i < attachedCanvas->xSize; i++)
-	{
-		for(int j = 0; j < attachedCanvas->ySize; j++)
-		{
-			Pixel pixel = attachedCanvas->pixels->pixels[j + i * attachedCanvas->xSize];
-			int r = pixel.color[0] * 255;
-			int g = pixel.color[1] * 255;
-			int b = pixel.color[2] * 255;
-			stream << r << " " << g << " " << b << " ";
-		}
+		return;
 	}
+
+	// Initialize PNG structures
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if (!png_ptr)
+	{
+		fclose(fp);
+		print("Failed to create PNG write struct!");
+		return;
+	}
+
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	if (!info_ptr)
+	{
+		png_destroy_write_struct(&png_ptr, NULL);
+		fclose(fp);
+		print("Failed to create PNG info struct!");
+		return;
+	}
+
+	// Set error handling
+	if (setjmp(png_jmpbuf(png_ptr)))
+	{
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		fclose(fp);
+		print("Failed to write PNG file!");
+		return;
+	}
+
+	// Set PNG file header
+	png_init_io(png_ptr, fp);
+	png_set_IHDR(png_ptr, info_ptr, attachedCanvas->xSize, attachedCanvas->ySize,
+		8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
+		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	png_write_info(png_ptr, info_ptr);
+
+	// Write PNG pixel data
+	png_bytep row_pointer = (png_bytep)malloc(3 * attachedCanvas->xSize);
+	for (int y = 0; y < attachedCanvas->ySize; ++y)
+	{
+		for (int x = 0; x < attachedCanvas->xSize; ++x)
+		{
+			Pixel pixel = attachedCanvas->pixels->pixels[y * attachedCanvas->xSize + x];
+			png_bytep ptr = &row_pointer[x * 3];
+			ptr[0] = static_cast<png_byte>(pixel.color[0] * 255.0f);
+			ptr[1] = static_cast<png_byte>(pixel.color[1] * 255.0f);
+			ptr[2] = static_cast<png_byte>(pixel.color[2] * 255.0f);
+		}
+		png_write_row(png_ptr, row_pointer);
+	}
+	free(row_pointer);
+
+	// Finish writing PNG file
+	png_write_end(png_ptr, NULL);
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+	fclose(fp);
+
+	print("PNG file written!");
 }
 bool Crack::Viewport::IsInsideViewport(glm::vec2 p) const
 {
@@ -118,6 +162,10 @@ glm::vec4* Crack::Viewport::GetViewportCorners() const
 Crack::Viewport::~Viewport()
 {
 	delete attachedCanvas;
+}
+bool Crack::Viewport::HasCanvas()
+{
+	return attachedCanvas != nullptr;
 }
 Shader* Crack::Viewport::GetShader() const
 {

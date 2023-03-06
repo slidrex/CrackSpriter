@@ -18,6 +18,7 @@ namespace Crack
 		void PushColor(glm::vec2 position, glm::vec4 color);
 		Pixel& GetPixel(glm::vec2 position);
 		void Export(const std::string& path) const;
+		bool HasCanvas();
 	private:
 		Canvas* attachedCanvas;
 	};

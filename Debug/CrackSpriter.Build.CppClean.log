@@ -3,9 +3,6 @@ c:\proj\crackspriter\debug\vc143.idb
 c:\proj\crackspriter\debug\viewport.obj
 c:\proj\crackspriter\debug\shader.obj
 c:\proj\crackspriter\debug\main.obj
-c:\proj\crackspriter\debug\gui.obj
-c:\proj\crackspriter\debug\filestreamparser.obj
-c:\proj\crackspriter\debug\editor.obj
 c:\proj\crackspriter\debug\imgui_widgets.obj
 c:\proj\crackspriter\debug\imgui_tables.obj
 c:\proj\crackspriter\debug\imgui_draw.obj
@@ -13,8 +10,14 @@ c:\proj\crackspriter\debug\imgui_demo.obj
 c:\proj\crackspriter\debug\imgui.obj
 c:\proj\crackspriter\debug\imgui_impl_opengl3.obj
 c:\proj\crackspriter\debug\imgui_impl_glfw.obj
-c:\proj\crackspriter\debug\crackspriter.exe
+c:\proj\crackspriter\debug\gui.obj
+c:\proj\crackspriter\debug\filestreamparser.obj
+c:\proj\crackspriter\debug\events.obj
+c:\proj\crackspriter\debug\editortools.obj
+c:\proj\crackspriter\debug\editor.obj
+c:\proj\crackspriter\debug\backupstack.obj
 c:\proj\crackspriter\debug\crackspriter.ilk
+c:\proj\crackspriter\debug\crackspriter.exe
 c:\proj\crackspriter\debug\crackspriter.pdb
 c:\proj\crackspriter\debug\crackspriter.tlog\cl.command.1.tlog
 c:\proj\crackspriter\debug\crackspriter.tlog\cl.read.1.tlog

@@ -25,6 +25,9 @@
     <Filter Include="Source Files\EditorTools">
       <UniqueIdentifier>{2cc2bb68-3413-42f6-ba05-e72eb6e14d98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\vendor\imgui">
+      <UniqueIdentifier>{843a3c81-0a93-4919-b404-174a18dfae2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,27 +48,6 @@
     <ClCompile Include="Editor.cpp">
       <Filter>Source Files\Layers</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Source Files\vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Source Files\vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Source Files\vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_tables.cpp">
-      <Filter>Source Files\vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Source Files\vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files\vendor</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\vendor</Filter>
-    </ClCompile>
     <ClCompile Include="EditorTools.cpp">
       <Filter>Source Files\EditorTools</Filter>
     </ClCompile>
@@ -74,6 +56,27 @@
     </ClCompile>
     <ClCompile Include="BackupStack.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>Source Files\vendor\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,24 +101,6 @@
     <ClInclude Include="GUI.h">
       <Filter>Source Files\Layers</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imconfig.h">
-      <Filter>Source Files\vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui.h">
-      <Filter>Source Files\vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>Source Files\vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\backends\imgui_impl_glfw.h">
-      <Filter>Source Files\vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\backends\imgui_impl_opengl3.h">
-      <Filter>Source Files\vendor</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\backends\imgui_impl_opengl3_loader.h">
-      <Filter>Source Files\vendor</Filter>
-    </ClInclude>
     <ClInclude Include="EditorTools.h">
       <Filter>Source Files\EditorTools</Filter>
     </ClInclude>
@@ -128,6 +113,24 @@
     <ClInclude Include="Canvas.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\backends\imgui_impl_glfw.h">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\backends\imgui_impl_opengl3.h">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>Source Files\vendor\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basicf.shader">
@@ -137,7 +140,8 @@
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="imgui\misc\debuggers\imgui.natvis">
-      <Filter>Source Files\vendor</Filter>
+      <Filter>Source Files\vendor\imgui</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

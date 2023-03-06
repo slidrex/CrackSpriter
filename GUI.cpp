@@ -20,13 +20,13 @@ void Crack::GUI::Update()
 	}
 
 
-	if (ImGui::Begin("Toolbar"))
+	if (m_Application->GetViewport().HasCanvas() && ImGui::Begin("Toolbar"))
 	{
 		OnToolbar();
 		ImGui::End();
 	}
 
-	if (showExportWindow)
+	if (showNewFileWindow)
 		OnExportWindow();
 
 	EndRenderUI();
@@ -38,7 +38,7 @@ void Crack::GUI::OnMainMenu()
 	{
 		if (ImGui::MenuItem("New File"))
 		{
-			showExportWindow = true;
+			showNewFileWindow = true;
 		}
 
 		if (ImGui::MenuItem("Export"))
@@ -85,6 +85,7 @@ void Crack::GUI::OnExportWindow()
 			m_Application->GetViewport().CreateCanvas(canvasSize[0], canvasSize[1], glm::vec4(canvasColor[0], canvasColor[1], canvasColor[2], 1.0f));
 			m_Application->Backups->ClearBackupStack();
 			int canvasSize[] = { 16, 16 };
+			showNewFileWindow = false;
 		}
 		ImGui::End();
 	}

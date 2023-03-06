@@ -18,6 +18,7 @@ namespace Crack
 		void EndRenderUI();
 		void OnExportWindow();
 		bool showExportWindow;
+		bool showNewFileWindow;
 	public:
 		GUI(Editor* application);
 	};

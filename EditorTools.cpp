@@ -3,20 +3,17 @@
 
 void Crack::Brush::OnPushBegin(Crack::Pixel& pixel)
 {
-	print("Brush push begin");
 	m_Editor->Backups->BeginWritePixels();
 }
 
 void Crack::Brush::OnPushEnd(Crack::Pixel& pixel)
 {
-	print("Brush push end");
 	m_Editor->Backups->EndWritePixels();
 }
 
 void Crack::Brush::OnPush(Crack::Pixel& pixel)
 {
 	m_Editor->Backups->WritePixel(pixel);
-	print("Push");
 	pixel.color[0] = m_Editor->GetPushColor()[0];
 	pixel.color[1] = m_Editor->GetPushColor()[1];
 	pixel.color[2] = m_Editor->GetPushColor()[2];

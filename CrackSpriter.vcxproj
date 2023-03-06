@@ -50,13 +50,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)imgui;%(AdditionalIncludeDirectories);$(SolutionDir)imgui\examples\libs\glfw\include;$(SolutionDir)vendor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)imgui;%(AdditionalIncludeDirectories);$(SolutionDir)imgui\examples\libs\glfw\include;$(SolutionDir)vendor;$(SolutionDir)packages\libpng-msvc-x64.1.6.33.8807\build\native\include;$(SolutionDir)packages\zlib_static.1.2.11.9\build\native\include;$(SolutionDir)packages\zlib_static.1.2.11.9\build\native\include;$(SolutionDir)packages\libpng_static.1.4.1.14\build\native\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glew\libs;$(SolutionDir)Dependencies\glfw\libs;$(SolutionDir)imgui\examples\example_glfw_opengl3\Debug\example_glfw_opengl3.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glew\libs;$(SolutionDir)Dependencies\glfw\libs;$(SolutionDir)imgui\examples\example_glfw_opengl3\Debug\example_glfw_opengl3.lib;$(SolutionDir)packages\libpng_static.1.4.1.14\build\native\lib\Win32\v141\Debug;$(SolutionDir)packages\zlib_static.1.2.11.9\build\native\lib\Win32\v141\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;libpng.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -67,15 +67,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories);$(SolutionDir)imgui-docking\examples\libs\glfw\include;$(SolutionDir)vendor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glew\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories);$(SolutionDir)imgui-docking\examples\libs\glfw\include;$(SolutionDir)vendor;$(SolutionDir)libpng\lib;$(SolutionDir)packages\libpng-msvc-x64.1.6.33.8807\build\native\include;$(SolutionDir)packages\zlib_static.1.2.11.9\build\native\include;$(SolutionDir)packages\zlib_static.1.2.11.9\build\native\include;$(SolutionDir)packages\libpng_static.1.4.1.14\build\native\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glew\libs;$(SolutionDir)Dependencies\glfw\libs;$(SolutionDir)imgui\examples\example_glfw_opengl3\Debug\example_glfw_opengl3.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\glew\libs;$(SolutionDir)Dependencies\glfw\libs;$(SolutionDir)imgui\examples\example_glfw_opengl3\Debug\example_glfw_opengl3.lib;$(SolutionDir)packages\libpng_static.1.4.1.14\build\native\lib\Win32\v141\Debug;$(SolutionDir)packages\zlib_static.1.2.11.9\build\native\lib\Win32\v141\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;libpng.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -118,6 +118,7 @@
   <ItemGroup>
     <None Include="Basicf.shader" />
     <None Include="Basicv.shader" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="imgui\examples\example_glfw_opengl3\example_glfw_opengl3.vcxproj">
@@ -129,5 +130,14 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\zlib_static.1.2.11.9\build\native\zlib_static.targets" Condition="Exists('packages\zlib_static.1.2.11.9\build\native\zlib_static.targets')" />
+    <Import Project="packages\libpng_static.1.4.1.14\build\native\libpng_static.targets" Condition="Exists('packages\libpng_static.1.4.1.14\build\native\libpng_static.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\zlib_static.1.2.11.9\build\native\zlib_static.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\zlib_static.1.2.11.9\build\native\zlib_static.targets'))" />
+    <Error Condition="!Exists('packages\libpng_static.1.4.1.14\build\native\libpng_static.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\libpng_static.1.4.1.14\build\native\libpng_static.targets'))" />
+  </Target>
 </Project>

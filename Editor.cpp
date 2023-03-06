@@ -15,6 +15,7 @@ Crack::Editor* Crack::Editor::s_Instance;
 Crack::Editor::Editor(GLFWwindow* window)
 	:selectedTool(EDITOR_TOOLS_BRUSH), m_Window(window), viewport(new Viewport()), maxZoomFactor(1.0f), minZoomFactor(0.03f), zoomFactor(0.1f), m_CanvasHeight(16), m_CanvasWidth(16), zoomSensitivity(0.04f)
 {
+	exportPath = "C:\\Users\\artem\\OneDrive\\Рабочий стол\\export.png";
 	pushColor[0] = 0.0f;
 	pushColor[1] = 0.0f;
 	pushColor[2] = 0.0f;
@@ -42,7 +43,6 @@ void Crack::Editor::Init()
 
 	viewport = new Crack::Viewport();
 
-	viewport->CreateCanvas(m_CanvasWidth, m_CanvasHeight, defaultCanvasColor);
 	
 }
 void Crack::Editor::SetPushColor(float* color)
@@ -68,6 +68,10 @@ void Crack::Editor::Undo()
 }
 void Crack::Editor::Update()
 {
+	if (viewport->HasCanvas()) UpdateCanvas();
+}
+void Crack::Editor::UpdateCanvas()
+{
 	int width, height;
 	glfwGetWindowSize(m_Window, &width, &height);
 
@@ -75,7 +79,7 @@ void Crack::Editor::Update()
 	glm::mat4 viewportMVP = projection;
 	viewport->GetShader()->Bind();
 	viewport->GetShader()->SetUniformMat4f("u_MVP", viewportMVP);
-	
+
 	bool down = rightMoused == false && leftMoused == false;
 	bool up = rightMoused || leftMoused;
 	rightMoused = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_1);
@@ -87,14 +91,14 @@ void Crack::Editor::Update()
 
 	if (rightMoused || leftMoused)
 	{
-		glm::vec2 cursorPosition =  Crack::Event::GetMousePosition();
+		glm::vec2 cursorPosition = Crack::Event::GetMousePosition();
 		glm::vec2 pushingPoint = viewport->ScreenToViewport(glm::vec2((float)width, (float)height), cursorPosition, projection);
 		bool isInside = viewport->IsInsideViewport(glm::vec4(pushingPoint.x, pushingPoint.y, 0.0f, 0.0f));
-		
+
 
 		if (isInside && pushingPoint != previousFramePushPosition)
 		{
-			if(down)
+			if (down)
 			{
 				tools[selectedTool]->OnPushBegin(viewport->GetPixel(pushingPoint));
 			}
@@ -108,14 +112,13 @@ void Crack::Editor::Update()
 		glm::vec2 pushingPoint = viewport->ScreenToViewport(glm::vec2((float)width, (float)height), cursorPosition, projection);
 		tools[selectedTool]->OnPushEnd(viewport->GetPixel(pushingPoint));
 	}
-		
+
 	undo = curUndo;
 
 	glPointSize(1 / zoomFactor);
 	viewport->Render();
 	viewport->GetShader()->Unbind();
 }
-
 void Crack::Editor::OnClose()
 {
 

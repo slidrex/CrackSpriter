@@ -1,2 +1,6 @@
-﻿  GUI.cpp
+﻿  Viewport.cpp
+C:\Proj\CrackSpriter\Viewport.cpp(25,19): warning C4018: '<': signed/unsigned mismatch
+C:\Proj\CrackSpriter\Viewport.cpp(27,20): warning C4018: '<': signed/unsigned mismatch
+C:\Proj\CrackSpriter\Viewport.cpp(117,20): warning C4018: '<': signed/unsigned mismatch
+C:\Proj\CrackSpriter\Viewport.cpp(119,21): warning C4018: '<': signed/unsigned mismatch
   CrackSpriter.vcxproj -> C:\Proj\CrackSpriter\Debug\CrackSpriter.exe
